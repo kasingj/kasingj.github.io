@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="prettify.css"/>
+    <script src="prettify.js"></script>
+
+    <script src="syntaxhighlighter_3.0.83/src/shCore.js"></script>
+    <script src="syntaxhighlighter_3.0.83/scripts/shBrushJava.js"></script>
+
+    <link href="syntaxhighlighter_3.0.83/styles/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="syntaxhighlighter_3.0.83/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {background-color: gray;}
+        #Pic {left:40px; position: relative; display: inline-block; margin-bottom: 20px;}
+        #Bio {margin-top:40px;margin-left: 30px; margin-right: 30px;border: solid gray; display: inline-block; width: 1200px; background-color: rgb(200,255,255); border-radius: 13px;}
+        img {margin-top: 30px; border-radius: 150px;}
+        h2 {position: absolute; top: 170px; left: 550px; font-family: "Futura", sans-serif; white-space: pre; font-size: 2em; color:gray;}
+        span {margin-right: 30px; padding-right: 30px; border-right: double;}
+        #code {height: 700px; margin-top:200px;margin-left: 30px; margin-right: 30px;border: solid gray; display: inline-block; width: 1200px; background-color: rgb(200,255,255); border-radius: 13px;}
+        #ProjectStyle {text-decoration: none; color:gray; font-family: "Futura"; font-size: 1.3em; padding-left: 20%;}
+        span a {color: white;}
+        .javaDiv {;display: inline-block;background-color: white; color: black; border: ridge gray;width: 1000px; height:500px; overflow-y: scroll; margin-left: 8%;;font-family: monospace; font-size: 1.2em;}
+        .javaCode {padding-left: 20px; font-family: monospace;}
+        .commentList {list-style: none; border: ridge gray; width: 370px; height: 500px; font-size: 1.3em; font-family: Futura; font-weight: 400; margin-left: 20px; margin-top: 37px;}
+        .webCode {height: 500px; margin-top:100px;margin-left:30px; margin-right: 30px;border: solid gray; display: inline-block; width: 1200px; background-color: rgb(200,255,255); border-radius: 13px;}
+        ol li {margin-bottom: 16px;}
+        li ul li {margin-top: 16px;}
+
+        #databases {height: 700px; margin-top:100px; margin-right: 30px; margin-left: 30px;border: solid gray; display: inline-block; width: 1200px; background-color: rgb(200,255,255); border-radius: 13px;}
+        #dbcode {display: inline-block;background-color: white; color: black; border: ridge gray;width: 1000px; height:500px; overflow-y: scroll; margin-left: 95px;font-family: monospace}
+
+
+    </style>
+
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script src="jquery.localscroll.js" type="text/javascript"></script>
+    <script src="jquery.scrollTo.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("").localScroll({duration:800});
+            });
+
+    </script>
+</head>
+
+<body>
+
+    <div id="Bio">
+        <div id="Pic">
+            <img src="PortfolioProfilePic.jpg" alt="Profile Image." height="400px" width="300px">
+        </div>
+        <a id="ProjectStyle" href="#Projects" >Let me show you what I've been working on!</a>
+        <h2>    Computer Science Student
+                      at
+Western Washington University
+        </h2>
+    </div>
+
+    <div style=" position: absolute;border-top: solid white; width: 1100px; left:90px; margin-top: 40px; white-space: pre; color:white; font-size: 1.2em">
+<span>Email: <a href="mailto:kasingj@students.wwu.edu?subject=inquiry">kasingj@students.wwu.edu</a></span> <span>Phone: (253)-740-9200</span> <span>Mailing Address: 913 Otis St Bellingham, Wa</span> <span><a href="https://github.com/kasingj">GitHub</a></span>
+    </div>
+
+
+
+  <!-- Begining of the code projects-->
+    <div id = "code">
+        <a name="Projects" style="position: absolute; margin-top: -25px;"></a>
+        <h1 style="margin-left: 30%; font-family: Futura; font-size: 2em;">Java code examples and projects</h1>
+    <!-- put all java code div's here-->
+
+    <h3 style="margin-left:8%">1. Social Network:  </h3>
+
+    <p style=" width:70% ; margin-left: 15%">
+        We were tasked to create a program that
+        reads and analyzes social network graphs. It will, for example, be able to identify the most
+        "important" node in a social network graph, and the "degrees of separation" between two
+        nodes in the graph.
+    </p>
+
+    <div class="javaDiv"> <p class="javaCode"><pre class="brush: java">/*
+ * SocialNetwork.java
+ *
+ * Defines a new "SocialNetwork" type, which is a directed graph tdhat
+ * represents the connections between users in a social network
+ *
+ * Note that the SocialNetwork type is immutable: after the fields are initialized
+ * in the constructor, they cannot be modified.
+ *
+ * Students may only use functionality provided in the packages
+ *     java.lang
+ *     java.util
+ *     java.io
+ *
+ * Use of any additional Java Class Library components is not permitted
+ *
+ * James Kasinger
+ *
+ */
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.lang.Math;
+
+public class SocialNetwork {
+   //initialize and define reverseAdjacencyList and adjacencyList
+   private HashMap<String,LinkedList<String>> adjacencyList = new HashMap<String,LinkedList<String>>();        // adj. list representation of graph
+   private HashMap<String,LinkedList<String>> reverseAdjacencyList = new HashMap<String,LinkedList<String>>(); // rev. adj. list representation of graph
+   private double d;                                                // parameter for PageRank
+   private double theta;                                            // parameter for PageRank
+   private LinkedList<String> sortedNodes = new LinkedList<String>();                          // a list of the nodes, sorted
+   private int sortedNodesSize;
+    // Constructor
+
+    // SocialNetwork
+    // Preconditions:
+    //     - networkFilename contains the path of a valid social network file
+    //     - d is a PageRank parameter
+    //     - theta is the PageRank convergence criterion
+    // Post-conditions
+    //     - this.adjacencyList is populated
+    //     - this.reverseAdjacencyList is populated
+    //     - this.d is set to d
+    //     - this.theta is set to theta
+    //     - this.sortedNodes is a a linked list containing all of the nodes, sorted alphabetically ascending
+    // Notes:
+    //     - You should call loadNetworkFile to read networkFilename and create the graph
+    //     - After loadNetworkFile, you should call sortAllLists
+    //     - this.adjacencyList and this.reverseAdjacencyList should have an entry for every node in the graph
+    //       Nodes with zero out-degree should map to an empty LinkedList (not null!)
+   public SocialNetwork(String networkFilename, double d, double theta) {
+      loadNetworkFile(networkFilename);
+      sortAllLists();
+      this.d = d;
+      this.theta = theta;
+      Collections.sort(sortedNodes);
+   }
+    // Accessors
+
+    // getSortedNodes
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - Returns this.sortedNodes
+   public LinkedList<String> getSortedNodes() {
+      return this.sortedNodes;
+   }
+    // outDegreeOfNode
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - If name is the name of a node in the graph, it returns name's out-degree
+    //    - If name is NOT the name of a node in the graph, it returns -1
+    // Notes:
+    //    - You may wish to implement a private helper method used by outDegreeOfNode and inDegreeOfNode
+   public int outDegreeOfNode(String name) {
+      return calculateDegree(this.adjacencyList, name);
+   }
+
+    // inDegreeOfNode
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - If name is the name of a node in the graph, it returns name's in-degree
+    //    - If name is NOT the name of a node in the graph, it returns -1
+    // Notes:
+    //    - You may wish to implement a private helper method used by outDegreeOfNode and inDegreeOfNode
+   public int inDegreeOfNode(String name) {
+      return calculateDegree(this.reverseAdjacencyList, name);
+   }
+    // computeAllInOutDegrees
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - A new DegreeResult object is returned where
+    //            the minOutDegree field contains the minimum out degree over all nodes
+    //            the argminOutDegree field contains the name of the node with minimum out degree
+    //            the maxOutDegree field contains the maximum out degree over all nodes
+    //            the argmaxOutDegree field contains the name of the node with maximum out degree
+    //            the minInDegree field contains the minimum in degree over all nodes
+    //            the argminInDegree field contains the name of the node with minimum in degree
+    //            the maxInDegree field contains the maximum in degree over all nodes
+    //            the argmaxInDegree field contains the name of the node with maximum in degree
+    //            the avgOutDegree field contains the average out degree over all nodes
+    // Notes:
+    //    - In any case of a tie, the alphabetically first node should be used
+   public DegreeResult computeAllInOutDegrees() {
+      int tempMinOut=1000000000; //max out this variable before searching min
+      int tempMaxOut= 0; //initialize to zero before comparison for max
+      int avgOutDegreeSum = 0;
+      String minOutKey = " ";
+      String maxOutKey=" ";
+
+      DegreeResult DegResult = new DegreeResult();
+
+      for (Map.Entry<String, LinkedList<String>> entry : adjacencyList.entrySet()) {
+          //get min out degree using adjList
+         avgOutDegreeSum+=entry.getValue().size();
+         if (  tempMinOut >= entry.getValue().size() ) {
+            if(tempMinOut == entry.getValue().size()){
+               //ternary if to check lexicographical precedence
+               minOutKey = ( (minOutKey.compareTo( entry.getKey() )>0 ) ?  entry.getKey() : minOutKey );
+               tempMinOut = entry.getValue().size();
+            }
+            else {
+               tempMinOut = entry.getValue().size();
+               minOutKey = entry.getKey();
+            }
+         }
+           //get maxOutDegree of adj
+         if (  tempMaxOut <= entry.getValue().size() ) {
+             //ternary if to check lexicographical precedence when nodes are equal
+            if(tempMaxOut == entry.getValue().size()){
+               maxOutKey = ( (maxOutKey.compareTo( entry.getKey() )>0 ) ?  entry.getKey() : maxOutKey );
+               tempMaxOut = entry.getValue().size();
+            }
+            //when values are not equal
+            else{
+               tempMaxOut = entry.getValue().size();
+               maxOutKey = entry.getKey();
+            }
+         }
+      }
+      //fill in fields for degResult
+      DegResult.minOutDegree = tempMinOut;
+      DegResult.maxOutDegree = tempMaxOut;
+      DegResult.argminOutDegree = minOutKey;
+      DegResult.argmaxOutDegree = maxOutKey;
+      //reset tempMin, tempmax //USE SAME VARIABLES TO COMPUTE IN (MIN MAX) DEGREE
+      tempMinOut = 100000000;
+      tempMaxOut=0;
+
+      for (Map.Entry<String, LinkedList<String>> entry : reverseAdjacencyList.entrySet()) {
+          //get min out degree using adjList
+         if (  tempMinOut >= entry.getValue().size() ) {
+            if(tempMinOut == entry.getValue().size()){
+               //ternary if to check lexicographical precedence
+               minOutKey = ( (minOutKey.compareTo( entry.getKey() )>0 ) ?  entry.getKey() : minOutKey );
+               tempMinOut = entry.getValue().size();
+            }
+            else{
+               tempMinOut = entry.getValue().size();
+               minOutKey = entry.getKey();
+            }
+         }
+           //get maxOutDegree of adj
+         if (  tempMaxOut < entry.getValue().size() ) {
+            if(tempMaxOut == entry.getValue().size()){
+               //ternary if to check lexicographical precedence
+               maxOutKey = ( (maxOutKey.compareTo( entry.getKey() )>0 ) ?  entry.getKey() : maxOutKey );
+               tempMaxOut = entry.getValue().size();
+            }
+            else{
+               tempMaxOut = entry.getValue().size();
+               maxOutKey = entry.getKey();
+            }
+         }
+      }
+      //ASSIGN FIELDS IN DEGREE RESULT FOR IN DEGREES
+      DegResult.minInDegree = tempMinOut;
+      DegResult.maxInDegree = tempMaxOut;
+      DegResult.argminInDegree = minOutKey;
+      DegResult.argmaxInDegree = maxOutKey;
+      DegResult.avgOutDegree = ((double) avgOutDegreeSum / (double)(sortedNodes.size() ) ) ;
+
+      return DegResult;
+   }
+
+    // checkClique
+    // Preconditions:
+    //    - names is a linked list of node names
+    // Postconditions:
+    //    - Returns true if the nodes in the names list form a clique, else returns false
+   public boolean checkClique( LinkedList<String> names ) {
+      ListIterator<String> namesItr = names.listIterator();
+      ListIterator<String> secondListItr = names.listIterator();
+
+      // For each list name check for mutual adjacency with all other nodes in list
+      while (namesItr.hasNext()) {
+         String name = namesItr.next();
+         while (secondListItr.hasNext()) {
+            secondListItr.next();
+            String secondName = secondListItr.next();
+            //not mutually adjacent then not click
+            if(  !(adjacencyList.get(name).contains( secondName) &&  adjacencyList.get(secondName).contains( name )) ) {
+               return false;
+            }
+         }
+      }
+      return true;
+   }
+
+    // degreesOfSeparation
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - If there is no node in the graph with the name srcName, returns null
+    //    - For every node x reachable from srcName, the returns HashMap maps x to the
+    //      length of the shortest path from srcName to x
+    //      (We can assume each edge has weight 1; i.e. we want shortest in terms of the number of edges)
+   public HashMap<String,Integer> degreesOfSeparation( String srcName ) {
+      HashMap<String,Integer> degreesMap = new HashMap<String,Integer>();
+      Queue<String> currentQueue = new LinkedList<String>();
+      Queue<String> outerQueue = new LinkedList<String>();
+      int count = 0;
+      int initialSizeOfQueue=0;
+      String w, tempName;
+      degreesMap.put(srcName, 0 );
+
+      //populate queue with first nodes adjacent set
+      for (int i=0; i<adjacencyList.get(srcName).size(); i++ ) {
+         currentQueue.add( adjacencyList.get(srcName).get(i) );
+      } //begin breadth first traversal starting from node
+      while (!currentQueue.isEmpty() ) {
+         initialSizeOfQueue = currentQueue.size();
+         int queueCount=0;
+         //scan adj set of queue.peek()
+         while (queueCount < initialSizeOfQueue){
+            queueCount++;
+            //if node not visited add it to degrees map with appropriate distannce from source
+            if(  !(degreesMap.containsKey(currentQueue.peek() ) )) {
+               degreesMap.put(currentQueue.peek(), count+1);
+               for (String n : adjacencyList.get(  currentQueue.peek() )) { //add the new entry nodes adj set to queue
+                  currentQueue.add( n );
+               }
+            }
+            currentQueue.remove();
+            //else { currentQueue.remove()  ; }
+         }
+         //increase count for next round of BFS traversal
+         count++;
+      }
+      return degreesMap;
+   }
+
+    // pageRank
+    // Preconditions:
+    //    - (1-this.d) is the "probability of getting bored"
+    //    - this.theta is the threshold for determining when page rank has converged
+    // Postconditions:
+    //    - A HashMap is return mapping nodes to their page rank value
+    // Notes:
+    //    - The page rank algorithm should run until the following convergence criterion is met:
+    //      For EVERY node x, abs(newPageRank(x)-oldPageRank(x))/oldPageRank(x) <= theta
+    //    - See assignment description for PageRank algorithm details
+   public HashMap<String,Double> pageRank() {
+      HashMap<String, Double> oldPageRank = new HashMap<String, Double>();
+      HashMap<String, Double> newPageRank = new HashMap<String, Double>();
+      boolean converged = false;
+      double initialDegree = ((double)1 / sortedNodesSize);
+      //fills old page rank with 1/V
+      for (String key : adjacencyList.keySet() ) {
+         oldPageRank.put(key, initialDegree);
+         newPageRank.put(key, initialDegree);
+      }
+      //Calculates page rank for every node in Sorted nodes.
+      while (!converged) {
+
+
+         //experiment for converged: set boolCount to 0. boolCount increases when convergence test has failed.
+         //at the end if boolCount is 0 then it has passed convergence, it becomes true exits while
+         int boolCount = 0;
+
+         for (String key : adjacencyList.keySet() ) {
+            ListIterator<String> adjSetItr = reverseAdjacencyList.get(key).listIterator();
+            double sum = 0.0;
+
+            while(adjSetItr.hasNext()) {
+            //compute sum of newpageranks for adj set of node "key"
+               String person = adjSetItr.next();
+               if(adjacencyList.get(person).size() == 0) {
+                  sum+= ((double)oldPageRank.get(person) / (double)sortedNodes.size() );
+               }
+               else {
+                  sum+= ((double)oldPageRank.get(person) / (double)adjacencyList.get(person).size() );}
+            }
+            sum*=this.d;
+            sum+= ((double)(1-d)/(double)sortedNodesSize);
+            newPageRank.put(key, sum);
+            //if the test ever fails to converge increase boolCount
+            if ( (Math.abs( sum - oldPageRank.get(key) )) / (double)oldPageRank.get(key) >= theta )  {
+               boolCount++;
+            }
+         }
+         //this way if boolCount =0 it never failed to converge
+         if(boolCount==0){
+            converged=true;
+         }
+         oldPageRank.putAll(newPageRank);
+      }
+      return newPageRank;
+   }
+
+    // adjacencyListToString
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - A string representation of the adjacency list will be created in sorted order:
+    //      the nodes should be sorted, and their adjacency sets should also be sorted.
+    //      Each line should look like
+    //      NodeName: FirstNodeInAdjSet SecondNodeInAdjSet ... LastNodeInAdjSet
+    // Notes:
+    //    - This should just call listToString
+   public String adjacencyListToString() {
+      return listToString(adjacencyList);
+   }
+
+    // reverseAdjacencyListToString
+    // Preconditions:
+    //    - None
+    // Postconditions:
+    //    - A string representation of the reverse adjacency list will be created in sorted order:
+    //      the nodes should be sorted, and their reverse adjacency sets should also be sorted.
+    //      Each line should look like
+    //      NodeName: FirstNodeInRevAdjSet SecondNodeInRevAdjSet ... LastNodeInRevAdjSet
+    // Notes:
+    //    - This should just call listToString
+   public String reverseAdjacencyListToString() {
+      return listToString(reverseAdjacencyList);
+   }
+
+    // listToString
+    // Preconditions:
+    //    - map is a HashMap from Strings to LinkedLists of Strings
+    // Postconditions:
+    //    - A string representation of the map will be created in sorted order:
+    //      the keys of the map should be sorted, and Strings in each LinkedList should also be sorted.
+    //      For example, if map denotes an adjacency set representation, each line should look like
+    //      NodeName: FirstNodeInAdjSet SecondNodeInAdjSet ... LastNodeInAdjSet
+    // Notes:
+    //    - Use a StringBuilder rather than repeated concatenation for efficiency
+   private String listToString( HashMap<String,LinkedList<String>> map ) {
+      //create a treeMap so the keys are all in sorted order before printing
+      Map<String,LinkedList<String>> treeMap = new TreeMap<String,LinkedList<String>>(map);
+      StringBuilder stringRep = new StringBuilder();
+      //iterate through a nodes linked list use string builder to print out adjacency of that node
+      for(String key : treeMap.keySet() ){
+
+         ListIterator<String> listItr = map.get(key).listIterator();
+         stringRep.append( "Nodename:  " + key + ": ");
+
+         while(listItr.hasNext()) {
+            stringRep.append(listItr.next() +" ");
+         }
+         stringRep.append(" \n ") ;
+      }
+
+      return stringRep.toString();
+   }
+
+    // Modifiers
+
+    // loadNetworkFile
+    // Preconditions:
+    //    - networkFilename is the name of a file encoding a social network
+    // Postconditions:
+    //    - this.adjacencyList an adjacency list representation of the social network graph
+    //       - specifically, it is a HashMap mapping each node name to its linked list adjacency set
+    //    - this.reverseAdjacencyList a reverse adjacency list representation of the social network graph
+    //       - specifically, a HashMap mapping each node name to its linked list of nodes it is adjacent to
+    // Notes:
+    //    - If you encounter a FileNotFoundException, print to standard error the message:
+    //      "Error: Not able to open file " + networkFilename
+    //      and exit with status 1 (i.e. System.exit(1))
+    //    - You should use the helper function addToList to avoid inadvertent duplicates
+   private void loadNetworkFile( String networkFilename ) {
+      //See if file exists and can read
+      try {
+         File textFile = new File(networkFilename);
+         if(!textFile.canRead()){
+            throw new FileNotFoundException();
+         }
+         Scanner input = new Scanner(textFile);
+         while(input.hasNext()){
+            //helper fucntion to populate hashmaps
+            buildHashMap( input.nextLine() );
+         }
+      }
+      catch (FileNotFoundException e) {
+         System.out.println("Error: Unable to open file " + networkFilename);
+         System.exit(1);
+      }
+   }
+
+///////////
+   public void buildHashMap ( String adjacencyLine  ) {
+      String [] splitLine = adjacencyLine.split(" ");
+   //If the key doesnt exist put the key in and give it a linked list with the first
+
+      if(  !(adjacencyList.containsKey( splitLine[0]) ) ){
+         LinkedList<String>  mapList = new LinkedList<String>();
+         addToList(splitLine[1],mapList);
+         this.adjacencyList.put(splitLine[0], mapList );
+
+         //if the partner node doesn't exist add it to hashmap with empty linked list
+         if(   !(adjacencyList.containsKey(splitLine[1])) ) {
+            LinkedList<String>  emptyList = new LinkedList<String>();
+            this.adjacencyList.put(splitLine[1], emptyList);
+         }
+      }
+      else {
+         addToList(splitLine[1], adjacencyList.get(splitLine[0]) );
+         // //if the partner node doesn't exist add it to hashmap with empty linked list
+         if(   !(adjacencyList.containsKey(splitLine[1])) ) {
+            LinkedList<String>  emptyList = new LinkedList<String>();
+            this.adjacencyList.put(splitLine[1], emptyList);
+         }
+          //if node exists add to linked list.
+      }
+   //Populate a reverse aDJACENCY LIST everything on right is a key everything on left add to link list
+      if(  !(reverseAdjacencyList.containsKey(splitLine[1])) ){
+         LinkedList<String>  mapList = new LinkedList<String>();
+         addToList(splitLine[0], mapList);
+         reverseAdjacencyList.put(splitLine[1], mapList);
+
+         //if the partner node doesn't exist add it to hashmap with empty linked list
+         if(   !(reverseAdjacencyList.containsKey(splitLine[0])) ) {
+            LinkedList<String>  emptyList = new LinkedList<String>();
+            this.reverseAdjacencyList.put(splitLine[0], emptyList);
+         }
+      }
+      else {
+         addToList(splitLine[0], reverseAdjacencyList.get(splitLine[1]));
+         //if the partner node doesn't exist add it to hashmap with empty linked list
+         if(   !(reverseAdjacencyList.containsKey(splitLine[0])) ) {
+            LinkedList<String>  emptyList = new LinkedList<String>();
+            this.reverseAdjacencyList.put(splitLine[0], emptyList);
+         }
+      }
+   }
+   // sortAllLists
+    // Preconditions:
+    //    - The adjacencyList and reverseAdjacencyList have been created
+    // Postconditions:
+    //    - All lists in the adjacencyList and reverseAdjacencyList are sorted alphabetically
+    //    - this.sortedNodes is a a linked list containing all of the nodes, sorted alphabetically ascending
+    // Notes:
+    //    - You can use Java's built-in sorting methods to do the actual sorting
+   private void sortAllLists() {
+      LinkedList<String> nodesList = new LinkedList<String>();
+      //sort the linked list for every key and add key to sorted nodes
+      for ( String key : adjacencyList.keySet() ){
+         Collections.sort(adjacencyList.get(key));
+         this.sortedNodes.add(key);
+         sortedNodesSize++;
+      }
+      for ( String key : reverseAdjacencyList.keySet() ){
+         Collections.sort(reverseAdjacencyList.get(key) );
+      }
+   }
+
+    // Static
+
+    // addToList
+    // Preconditions:
+    //    - nodeName contains a new node to add to list
+    // Postconditions:
+    //    - If list already contains nodeName, no change is made
+    //    - If list does not contain nodeName, nodeName is added to the end of list
+   private static void addToList(String nodeName,LinkedList<String> list) {
+      //only ad to list if name doesn't exist there yet
+      if (!list.contains(nodeName)) {
+         list.add(nodeName);
+      }
+   }
+
+
+  //helper function to compute the degree of a node given a hashmap and a key
+   public int calculateDegree (HashMap<String,LinkedList<String>> list, String key  ) {
+      if (list.containsKey(key) ) {
+         return list.get(key).size();
+      }
+      return -1;
+   }
+}
+}</pre></p>
+    </div>
+
+    <!--
+    <p style="border-bottom: ridge gray;"></p>
+
+      <ul class="commentList">
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+      </ul>
+-->
+      </div>
+
+    <!-- end of first code block .......................................................................... -->
+
+<!--
+
+
+    <div class="javaDiv"> <p class="javaCode"><pre class="brush: java">
+/*James Kasinger
+#W00930559
+CSCI 145 Assignment #1
+MazeSolver.java
+October 26 2014*/
+
+import java.util.Arrays;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+
+public class MazeSolver {
+
+   static File inputFile;
+
+   public static void main(String[] args) throws FileNotFoundException {
+      if (handleArguments(args)) {
+         char[][] mazeArray=readMazeFile(inputFile);
+         DrawMaze.draw(mazeArray);
+         if (solveMaze(readMazeFile(inputFile), DrawMaze.startX, DrawMaze.startY))
+            System.out.println("Solved!");
+         else
+            System.out.println("Maze has no solution.");
+      }
+   }
+
+   static boolean handleArguments(String[] args) throws FileNotFoundException {
+      // Check for correct number of arguments
+      if (args.length < 1) {
+         System.out.println("Wrong number of command line arguments.");
+         return false;
+      }
+      else if (args.length==2) {
+         DrawMaze.cellsize = Integer.parseInt(args[1]);
+      }
+      else if (args.length==3){
+         DrawMaze.cellsize = Integer.parseInt(args[1]);
+         DrawMaze.borderwidth = Integer.parseInt(args[2]);
+      }
+      else if(args.length>3){
+         DrawMaze.cellsize = Integer.parseInt(args[1]);
+         DrawMaze.borderwidth = Integer.parseInt(args[2]);
+         DrawMaze.sleeptime = Integer.parseInt(args[3]);
+      }
+      inputFile = new File(args[0]);
+      if (!inputFile.canRead()) {
+         System.out.println("The file " + args[0] + " cannot be opened for input.");
+         return false;
+      }
+      return true;
+   }
+
+   // Read the file describing the maze.
+   public static char[][] readMazeFile(File input__File) throws FileNotFoundException {
+      Scanner console = new Scanner(inputFile);
+
+      int leftCellNum = console.nextInt();
+      int topCellNum = console.nextInt();
+
+      int actualLeftNum = leftCellNum*2+1;
+      int actualTopNum = topCellNum*2+1;
+
+      char[][] mazeArray= new char[actualLeftNum][actualTopNum];
+
+
+      String line=console.nextLine();
+      for(int i=0;i< actualLeftNum;i++){
+         int counter=0;
+         line = console.nextLine();
+         for(int j=0;j< actualTopNum;j++){
+
+            mazeArray[i][j]=line.charAt(counter);
+            counter+=1;
+         }
+      }
+      return mazeArray;
+   }
+
+   // Solve the maze.
+   static boolean solveMaze(char[][] mazeArray, int r,int c) {
+      //base case
+      if (mazeArray[r][c]=='E'){
+         return true;
+      }
+      //mark x on arrival
+      if (mazeArray[r][c] != 'X'){
+         mazeArray[r][c]='X';
+      }
+      //try up
+      if (mazeArray[r-1][c]==' ' && mazeArray[r-2][c]!='X'){
+         DrawMaze.move(r,c,r-2,c);
+         if(solveMaze(mazeArray,r-2,c)){
+            return true;}
+         DrawMaze.unmove(r,c,r-2,c);
+      }
+      //try left
+      if (mazeArray[r][c-1]==' ' && mazeArray[r][c-2]!='X'){
+         DrawMaze.move(r,c,r,c-2);
+         if (solveMaze(mazeArray,r,c-2)){
+            return true;}
+         DrawMaze.unmove(r,c,r,c-2);
+      }
+      //try down
+      if (mazeArray[r+1][c]==' ' && mazeArray[r+2][c]!='X'){
+         DrawMaze.move(r,c,r+2,c);
+         if(solveMaze(mazeArray,r+2,c)){
+            return true;}
+         DrawMaze.unmove(r,c,r+2,c);
+      }
+      //try right
+      if (mazeArray[r][c+1]==' ' && mazeArray[r][c+2]!='X'){
+         DrawMaze.move(r,c,r,c+2);
+
+         if(solveMaze(mazeArray,r,c+2)){
+            return true;}
+         DrawMaze.unmove(r,c,r,c+2);
+      }
+      mazeArray[r][c]=' ';
+      return false;
+   }
+}
+
+
+    </pre>
+    </p>
+
+    </div>
+
+
+
+     <ul class="commentList" style="margin-top: 80px; ">
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+        <li>comments here</li>
+     </ul>
+    </div>
+
+      -->
+
+    <!-- Javascript/web code................................................................................................-->
+    <div class="webCode">
+        <ol>
+            <h1 style="margin-left:30%" >Web Development projects</h1>
+                <li>This website was created by me, James Kasinger, implementing the web skills I've developed in my studies at Western Washington University, and at home.</li>
+                    <ul><li><a href="view-source:file:///Users/jameskasinger/Documents/komodo%20edit%20files/portfolio-landing.htm">View Source</a></li></ul>
+                <li>
+
+                        <a href="http://myweb.students.wwu.edu/~kasingj/cs202/james_lab_folder/project/projectOpening.htm">CS 202 Final Project website</a>
+
+                </li>
+                 <li>Client side form validation samples
+                    <ul>
+                        <li><a href="#">Example 1</a></li>
+                        <li><a href="#">Example 2</a></li>
+                    </ul>
+                </li>
+               <li> Javascript samples
+                    <ul>
+                        <li><a href= "#">Example 1</a></li>
+                        <li><a href= "#">Example 2</a></li>
+                    </ul>
+               </li>
+
+        </ol>
+    </div>
+
+     <div id="databases">
+        <h1 style="margin-left:40%">Database projects</h1>
+
+                <div id="dbcode" >
+                        <p>
+                                <pre style="margin-left:15px">
+import java.lang.*;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.util.regex.*;
+
+/**
+ * Created by kasingj on 5/20/15.
+ */
+public class Prog3 {
+
+
+    public static void main(String[] args) {
+
+        try {
+            Connection conn = getConnection();
+            executeUserQueries(conn);
+
+
+        } catch (SQLException ex) {
+            System.out.println("SQL exception");
+        }
+
+    }
+
+
+    public static void executeUserQueries(Connection conn) throws SQLException {
+
+
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            String[] date = {","};
+            //prompt user //
+            System.out.println("what airport will you depart from? (airport code)");
+            String origin = sc.next();
+            System.out.println("what airport will you arrive at? (airport code)");
+            String destination = sc.next();
+
+            System.out.println("Is this a round trip flight? (y/n)");
+            String roundtrip = sc.next();
+
+            if (!(roundtrip.trim().equals("y")) & !(roundtrip.trim().equals("n")) ) {
+                System.out.println("please enter y or n");
+                continue;
+            }
+
+            System.out.println("What date would you like to depart?");
+            date[0] = sc.next();
+
+            if (!isValid(origin, destination, date, conn, roundtrip)) {
+                System.out.println("this is not valid information");
+		continue;
+
+            }
+            calculateFare(origin, destination, date, conn, roundtrip);
+
+        }
+    }
+
+
+    //calculate fare for single and roundtrip
+    public static void calculateFare(String origin, String dest, String[] date, Connection conn, String roundtrip) throws SQLException {
+        //input is valid
+        //test if roundtrip
+        Statement s1 = conn.createStatement();
+       //get all flights matching orgin dest and date
+	System.out.println("made it into calculate fare");
+        ResultSet flights = s1.executeQuery("select flightNumber from flights where origin = \"" + origin + "\" and destination =\"" + dest + "\" and flightDate = \"" + date[0] + "\";");
+        Scanner sc = new Scanner(System.in);
+
+
+
+        System.out.println("What cabin would you prefer? Please select Economy, Business, or First ");
+        String cabin = sc.next();
+
+
+        while (!cabin.equals("Economy") & !cabin.equals("First") & !cabin.equals("Business")) {
+            System.out.println("That's not an option, Please select Economy, Business, or First ");
+            cabin = sc.next();
+        }
+
+        Statement s3 = conn.createStatement();
+        ResultSet oneWay=null;
+
+        if (roundtrip.equals("n")) {
+        flights.next();
+	while( flights.next() ) {
+
+               oneWay = s3.executeQuery(
+                        "select flights.flightNumber, flights.typePlane, fares.price, fares.cabin, (fares.seatsPerRow * fares.numRows)"
+				+	" as totalSeats, flights.airlineCode" +
+                                " from flights INNER JOIN fares on (fares.flightNumber = flights.flightNumber)" +
+                                " and (flights.flightNumber = \"" + flights.getString(0) +
+                                "\") and (fares.flightNumber = \"" + flights.getString(0) +
+                                "\") and (fares.cabin = \""+cabin +"\");" );
+            }
+       System.out.println("made it past the one way query ");
+	 printResultSet(conn, oneWay, cabin, date);
+        //deal with round trip
+        }
+    }
+
+    public static void printResultSet(Connection conn, ResultSet hits, String cabin,String[] date)throws SQLException{
+        // price   |    type plane   (boeing 737-900) |    num seats   |    airlineName delta
+        /* mysql> select flights.typePlane,flights.flightNumber, flights.airlineCode,    fares.cabin, fares.numRows, fares.seatsPerRow, fares.price    from flights INNER JOIN fares
+        on fares.flightNumber = flights.flightNumber   and flights.flightNumber = 5992 and fares.flightNumber = 5992 limit 50;*/
+        if (hits ==null){
+	System.out.println("No such flights Exist in our system");
+	}else{
+	while(hits.next()) {
+
+	System.out.println("All these hits");
+            //use airport code to query airlines and type plane to query aircraft
+            //can use flight's result set to get type plane and airline name
+
+
+                //System.out.println("price: " + hits.getString(0) + " type of plane: " +    + "    " +
+                  //=x      "available seats: "    );
+}
+
+
+
+
+        }
+
+
+
+
+
+        System.out.println("");
+    }
+
+    //validate queries
+    public static boolean isValid(String origin, String destination, String[] date, Connection conn, String roundtrip) throws SQLException {
+        try {
+
+            Statement statement = conn.createStatement();
+       		System.out.println("made it into calculate fare");
+
+	ResultSet airportsExist = statement.executeQuery("select airport_code from world_airports where airport_code = \"" + origin + "\" or airport_code = \"" + destination + "\";");
+		System.out.println("made it past first sql ");
+            int count = 0;
+	   while(airportsExist.next()){
+		count++;
+		}
+	    if ( !(count >= 2)) {
+                System.out.println("Origin or destination is invalid please start over .");
+                return false;
+            }
+            //"(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)"
+            Pattern p = Pattern.compile("((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])");
+            Matcher m1 = p.matcher(date[0]);
+            //validate the date
+            if (!m1.matches()) {
+                System.out.println("the date is invalid please start over.");
+                return false;
+
+            }
+            if (roundtrip.equals("y")) {
+                Matcher m2 = p.matcher(date[1]);
+                if (!m2.matches()) {
+                    System.out.println("return date is invalid, please try again.");
+                }
+                return true;
+            }
+
+System.out.println(" bout to leave is valid");
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Bad SQL queries");
+            System.exit(1);
+        }
+
+        return false;
+
+    }
+
+
+    public static String[] readFile() {
+        try {
+            //read in db credentials
+            File f = new File("ConnectionCredentials.txt");
+            Scanner sc = new Scanner(f);
+            String[] myCredentials = sc.nextLine().split(" ");
+            return myCredentials;
+        } catch (FileNotFoundException ex) {
+            System.out.println("Cannot find ConnectionCredentials.txt ");
+        }
+        return null;
+    }
+
+    //–––––––––––getConnection––––––––––––––––––––––––––––––//
+    public static Connection getConnection() throws SQLException {
+        //Access the databse with supplied credentials
+        try {
+            String[] dbAccess = readFile();
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection
+                    (dbAccess[0], dbAccess[1], dbAccess[2]);
+            return connection;
+        } catch (ClassNotFoundException ex) {
+            System.out.println("exception");
+            System.exit(1);
+        }
+
+        return null;
+
+    }
+
+
+}
+                                </pre>
+                        </p>
+                </div>
+
+
+     </div>
+
+
+    <p style="height: 400px;"></p>
+
+    <script>
+        //prettyPrint();
+        SyntaxHighlighter.all();
+    </script>
+
+</body>
+</html>
